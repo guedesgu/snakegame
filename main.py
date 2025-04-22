@@ -18,12 +18,11 @@ snake_dir = (0, 0)
 food = pg.rect.Rect([0, 0, TILE_SIZE - 2, TILE_SIZE - 2])
 food.center = get_random_position()
 
-time, time_step = 0, 100
+time, time_step = 0, 120
 screen = pg.display.set_mode([WINDOW] * 2)
 clock = pg.time.Clock()
 
-# carrega imagem de fundo uma vez
-bgTeste = pg.image.load('image.png')
+
 
 while True:
     for event in pg.event.get():
@@ -43,14 +42,20 @@ while True:
             if event.key == pg.K_d:
                 snake_dir = (TILE_SIZE, 0)
 
+    # carrega imagens para variavéis
+    imgBg = pg.image.load('image.png')
+    imgSnk = pg.transform.scale(pg.image.load('snake.png'), (TILE_SIZE, TILE_SIZE))
+    imgFood = pg.transform.scale(pg.image.load('food.png'), (TILE_SIZE + 1, TILE_SIZE + 1))
+
     # aplica imagem de fundo
-    screen.blit(bgTeste, (0, 0))
+    screen.blit(imgBg, (0, 0))
 
     # desenha comida
-    pg.draw.rect(screen, 'red', food)
+    screen.blit(imgFood, food)
 
-    # desenha a cobra
-    [pg.draw.rect(screen, 'blue', segment) for segment in segments]
+    # desenha a cobra com imagem
+    for segment in segments:
+        screen.blit(imgSnk, segment)
 
     # movimentação da cobra
     time_now = pg.time.get_ticks()
